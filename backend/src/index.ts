@@ -20,7 +20,7 @@ interface Task {
   let tasks: Task[] = [];
   let nextId = 1;
 
-        // - GET Obtener todas las tareas
+    // - GET Obtener todas las tareas
     app.get("/api/tasks", (req: Request, res: Response) => {
         res.status(200).json(tasks);
         }); 
