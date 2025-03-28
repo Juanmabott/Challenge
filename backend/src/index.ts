@@ -49,3 +49,39 @@ interface Task {
     }).on("error", (error) => {
     throw new Error(error.message);
     });
+
+    // - PUT Actualizar una tarea existente
+    app.put("/api/tasks/:id", (req: Request, res: Response) => {
+        const taskId = parseInt(req.params.id);
+        const { title, description } = req.body;
+        
+        const taskIndex = tasks.findIndex((task) => task.id === taskId);
+        
+        if (taskIndex === -1) {
+            res.status(404).json({ error: "Task not found" });
+        }
+        
+        const updatedTask: Task = {
+            ...tasks[taskIndex],
+            title,
+            description,
+        };
+        
+        tasks[taskIndex] = updatedTask;
+        
+        res.status(200).json(updatedTask);
+    });
+    // - DELETE Eliminar una tarea existente
+    app.delete("/api/tasks/:id", (req: Request, res: Response) => {
+        const taskId = parseInt(req.params.id);
+        
+        const taskIndex = tasks.findIndex((task) => task.id === taskId);
+        
+        if (taskIndex === -1) {
+            res.status(404).json({ error: "Task not found" });
+        }
+        
+        tasks.splice(taskIndex, 1);
+        
+        res.status(204).send();
+    });
